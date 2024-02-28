@@ -1,3 +1,5 @@
+<%= render "shared/admin_header" %>
+
 <%= form_with url: admin_merchants_path, method: :post do |f| %>
   <%= f.label :name, "Merchant's Name" %>
   <%= f.text_field :name %>

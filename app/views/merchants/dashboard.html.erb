@@ -1,11 +1,4 @@
-<section class="links"> 
-  <p><%= link_to "Merchant Items", merchant_items_path(@merchant), method: :get  %></p>
-  <p><%= link_to "Merchant Invoice Items", merchant_invoices_path(@merchant), method: :get %></p>
-</section>
-
-<section class="merchant-info">
-  <h1><%= @merchant.name %></h1>
-</section>
+<%= render "shared/merchant_header", merchant: @merchant %>
 
 <section class="top-five">
   <h3> Top Five Customers </h3>
