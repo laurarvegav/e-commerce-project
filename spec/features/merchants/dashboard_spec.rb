@@ -25,6 +25,8 @@ RSpec.describe 'merchants dashboard', type: :feature do
       @trans_6 = create(:transaction, invoice_id: @invoice_6.id)
       
       @merch_1 = create(:merchant, name: "Amazon") 
+      @discount_m1_A = BulkDiscount.create!(percentage_discount: 20, quantity_treshold: 10, merchant_id: @merch_1.id)
+      @discount_m1_B = BulkDiscount.create!(percentage_discount: 30, quantity_treshold: 15, merchant_id: @merch_1.id)
 
       @item_1 = create(:item, unit_price: 1, merchant_id: @merch_1.id)
 
@@ -133,6 +135,21 @@ RSpec.describe 'merchants dashboard', type: :feature do
 
         expect(@invoice_6.created_at.strftime('%A, %B, %d, %Y')).to appear_before(@invoice_5.created_at.strftime('%A, %B, %d, %Y'))
       end
+    end
+
+    #User story I-1: Merchant Bulk Discounts Index
+    it "displays links to view all bulk discounts that takes me to bulk discount index page" do
+      # As a merchant
+      # When I visit my merchant dashboard
+      visit dashboard_merchant_path(@merch_1)
+      # Then I see a link to view all my discounts
+      within "#bulk_discounts" do
+        # When I click this link
+        click_link("View All #{@merch_1.name} Discounts")
+        # Then I am taken to my bulk discounts index page
+        expect(current_path).to eq(merchant_bulk_discounts_path(@merch_1.id))
+      end
+      #Continued in spec/features/bulk_discounts/index_spec.rb
     end
   end
 end
