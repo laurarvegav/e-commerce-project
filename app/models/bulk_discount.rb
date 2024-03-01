@@ -1,3 +1,6 @@
 class BulkDiscount < ApplicationRecord
-  belongs_to :merchant_id
+  validates_presence_of :percentage_discount,
+                        :quantity_treshold
+
+  belongs_to :merchant
 end
