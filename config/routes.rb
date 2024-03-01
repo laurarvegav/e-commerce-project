@@ -24,4 +24,7 @@ Rails.application.routes.draw do
   get "/", to: "welcome#index"
   resources :invoices, controller: "merchant_invoices"
 
+  resources :merchant do
+    resources :bulk_discounts, only: [:show, :index]
+  end
 end
