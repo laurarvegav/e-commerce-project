@@ -1,10 +1,10 @@
 class InvoiceItem < ApplicationRecord
-  validates :quantity, presence: true
-  validates :unit_price, presence: true
-  validates :status, presence: true
-  
-  belongs_to :item
+  validates_presence_of :quantity, 
+                        :unit_price,
+                        :status
+
   belongs_to :invoice
+  belongs_to :item
   
   enum status: ["pending", "packaged", "shipped"]
 

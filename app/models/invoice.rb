@@ -1,5 +1,6 @@
 class Invoice < ApplicationRecord
-  validates :status, presence: true
+  validates_presence_of :status,
+                        :customer_id
   
   belongs_to :customer
   has_many :transactions, dependent: :destroy
@@ -11,15 +12,15 @@ class Invoice < ApplicationRecord
   
   # class method for checking status of invoice
   def self.invoices_with_unshipped_items
-    Invoice.select("invoices.*").joins(:invoice_items).where("invoice_items.status != 2")
+    select("invoices.*").joins(:invoice_items).where("invoice_items.status != 2")
   end
 
   def self.oldest_to_newest
-    Invoice.order("invoices.created_at")
+    order("invoices.created_at")
   end
 
   def self.invoices_with_unshipped_items_oldest_to_newest
-    Invoice.invoices_with_unshipped_items.oldest_to_newest
+    invoices_with_unshipped_items.oldest_to_newest
   end
 
   def total_revenue_dollars
@@ -27,6 +28,6 @@ class Invoice < ApplicationRecord
   end
   
   def total_revenue
-    self.invoice_items.sum("unit_price * quantity")
+    invoice_items.sum("unit_price * quantity")
   end
 end
