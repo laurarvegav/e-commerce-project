@@ -27,6 +27,7 @@ table, th, td {
 
 <div id="invoice_revenue">
   <p>Total Revenue: <%= number_to_currency((@invoice.total_revenue_dollars), unit: "$")%></p>
+  <p>Net Revenue(after discounts): <%= number_to_currency(((@invoice.total_revenue_dollars)*(1-@invoice.eligible_discount)), unit: "$")%></p>
 </div>
 
 <p>Customer: <%= @invoice.customer.first_name %> <%= @invoice.customer.last_name %></p>
