@@ -7,3 +7,5 @@
     <%= link_to "Discount Details", merchant_bulk_discounts_path(@merchant.id, discount.id) %>
   </div>
 <% end %>
+
+<h3><%= link_to "Create New Discount", new_merchant_bulk_discount_path(@merchant.id) %></h3>
