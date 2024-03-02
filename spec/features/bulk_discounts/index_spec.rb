@@ -30,5 +30,18 @@ RSpec.describe 'Bulk discounts index page', type: :feature do
         expect(page).to have_link("Discount Details")
       end
     end   
+
+    # User Story I-2. 2: Merchant Bulk Discount Create
+    it "displays link to create a new discount" do
+      # As a merchant, when I visit my bulk discounts index
+      visit merchant_bulk_discounts_path(@merchant_1.id)
+      # Then I see a link to create a new discount
+      expect(page).to have_link(href: new_merchant_bulk_discount_path(@merchant_1.id))
+      # When I click this link
+      click_link("Create New Discount")
+      # Then I am taken to a new page where I see a form to add a new bulk discount
+      expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant_1.id))
+      #Continued in spec/features/bulk_discounts/new_spec.rb
+    end
   end
 end
