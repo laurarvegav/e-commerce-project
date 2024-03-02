@@ -106,7 +106,7 @@ RSpec.describe 'Admin Index Show', type: :feature do
     end
 
     #User story I-8: Admin Invoice Show Page: Total Revenue and Discounted Revenue
-    it "" do
+    it "displays the net revenue after discounts" do
       # As an admin When I visit an admin invoice show page
       visit admin_invoice_path(@invoice_1)
       save_and_open_page
