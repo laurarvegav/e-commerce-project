@@ -36,6 +36,20 @@ class BulkDiscountsController < ApplicationController
     @discount = BulkDiscount.find(params[:id])
   end
 
+  def update
+    merchant = Merchant.find(params[:merchant_id])
+    bulk_discount = BulkDiscount.find(params[:id])
+
+    if bulk_discount.update(discount_merchant_params)
+      bulk_discount.update(discount_merchant_params)
+      redirect_to merchant_bulk_discount_path(merchant, bulk_discount)
+      flash[:success] = "The information has been successfully updated for the discount"
+    else
+      redirect_to edit_merchant_bulk_discount_path(merchant, bulk_discount)
+      flash[:alert] = "Error: #{error_message(bulk_discount.errors)}"
+    end
+  end
+
   private
   def discount_merchant_params
     params.permit(:percentage_discount, :quantity_treshold, :merchant_id)
