@@ -48,6 +48,9 @@ RSpec.describe Merchant, type: :model do
     @merchant_6 = create(:merchant, name: "Aetna", status: 1) 
     @merchant_7 = create(:merchant, name: "Adidas", status: 1) 
 
+    @discount_m1_A = BulkDiscount.create!(percentage_discount: 20, quantity_treshold: 10, merchant_id: @merchant_1.id)
+    @discount_m1_B = BulkDiscount.create!(percentage_discount: 30, quantity_treshold: 15, merchant_id: @merchant_1.id)
+
     @item_1 = create(:item, unit_price: 1, merchant_id: @merchant_1.id)
     @item_2 = create(:item, unit_price: 1, merchant_id: @merchant_1.id)
     @item_3 = create(:item, unit_price: 1, merchant_id: @merchant_1.id)
@@ -131,6 +134,17 @@ RSpec.describe Merchant, type: :model do
     describe ".top_five_merchants" do
       it "returns an array of the 5 merchants with the highest revenue" do
         expect(Merchant.top_five_merchants).to eq([@merchant_2, @merchant_3, @merchant_5, @merchant_1, @merchant_6])
+      end
+    
+      describe "#eligible_discount" do
+        it "returns the biggest discount that the quantity qualifies for" do
+          expect(@merchant_1.eligible_discount(15)).to eq(30)
+          expect(@merchant_1.eligible_discount(10)).to eq(20)
+        end
+        
+        it "returns 0 when no discount is applicable" do
+          expect(@merchant_1.eligible_discount(5)).to eq(0)
+        end
       end
     end
   end
