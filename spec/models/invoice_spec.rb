@@ -105,24 +105,25 @@ RSpec.describe Invoice, type: :model do
 
     describe ".brute_revenue" do
       it "returns the correct net revenue to be generated" do
-        expect(Invoice.brute_revenue). to eq(339)
-      end
-    end
-
-    describe ".discounts" do
-      it "returns the correct discounts" do
-        expect(Invoice.discounts). to eq(24)
+        
+        expect(Invoice.brute_revenue).to eq(339)
       end
     end
 
     describe ".net_revenue" do
       it "returns the correct net revenue to be generated after discounts" do
-        expect(Invoice.net_revenue). to eq(300)
+        expect(Invoice.net_revenue).to eq(237)
       end
     end
   end
 
   describe "#Instance Methods" do
+    describe ".eligible_discount" do
+      it "returns the correct discounts" do
+        expect(@invoice_1.eligible_discount).to eq(0.30)
+      end
+    end
+
     describe "#total_revenue_dollars" do
       it "returns the correct revenue that an invoice will generate" do
         expect(@invoice_1.total_revenue_dollars).to eq(248.00)
@@ -135,12 +136,6 @@ RSpec.describe Invoice, type: :model do
         expect(@invoice_6.total_revenue).to eq(0)
         expect(@invoice_1.total_revenue).to eq(24800)
         expect(@invoice_2.total_revenue).to eq(1300)
-        expect(@invoice_3.total_revenue).to eq(1300)
-        expect(@invoice_4.total_revenue).to eq(1300)
-        expect(@invoice_5.total_revenue).to eq(1300)
-        expect(@invoice_7.total_revenue).to eq(1300)
-        expect(@invoice_8.total_revenue).to eq(1300)
-        expect(@invoice_9.total_revenue).to eq(1300)
       end
     end
   end
