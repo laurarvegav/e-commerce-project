@@ -26,6 +26,8 @@ RSpec.describe 'merchant invoice show', type: :feature do
       
       @merch_1 = create(:merchant, name: "Amazon") 
       @merch_2 = create(:merchant) 
+      @discount_m1_A = BulkDiscount.create!(percentage_discount: 20, quantity_treshold: 10, merchant_id: @merch_1.id)
+      @discount_m1_B = BulkDiscount.create!(percentage_discount: 30, quantity_treshold: 15, merchant_id: @merch_1.id)
 
       @item_1 = create(:item, unit_price: 1, merchant_id: @merch_1.id)
       @item_3 = create(:item, unit_price: 1, merchant_id: @merch_1.id, status: 1)
@@ -37,6 +39,7 @@ RSpec.describe 'merchant invoice show', type: :feature do
       create(:invoice_item, item_id: @item_1.id, invoice_id: @invoice_4.id, unit_price: 1, quantity: 50, status: 2)
       create(:invoice_item, item_id: @item_1.id, invoice_id: @invoice_5.id, unit_price: 1, quantity: 40)
       create(:invoice_item, item_id: @item_1.id, invoice_id: @invoice_6.id, unit_price: 1, quantity: 5)
+      create(:invoice_item, item_id: @item_3.id, invoice_id: @invoice_6.id, unit_price: 1, quantity: 15)
     end
 
    
@@ -118,6 +121,23 @@ RSpec.describe 'merchant invoice show', type: :feature do
       within "#item-#{@item_1.id}" do 
         # And I see that my Item's status has now been updated
         expect(page).to have_content("Enabled")
+      end
+    end
+
+    #User Story I-7: Merchant Invoice Show Page: Link to applied discounts
+    it "displays a link to the applied bulk discount to eligible invoice item" do
+      # As a merchant When I visit my merchant invoice show page
+      visit merchant_invoice_path(@merch_1, @invoice_6)
+      save_and_open_page
+      # Next to each invoice item I see a link to the show page for the bulk discount that was applied (if any)
+      within ".invoice-items" do
+        within "#item-#{@item_3.id}" do
+          expect(page).to have_link("Details on Bulk Discount")
+        end
+
+        within "#item-#{@item_1.id}" do
+          expect(page).not_to have_link("Details on Bulk Discount")
+        end
       end
     end
   end 
