@@ -52,4 +52,13 @@ class Merchant < ApplicationRecord
     .where("merchants.id = #{self.id}")
     .first.invoice_date
   end
+
+  def eligible_discount(quantity)
+    self.bulk_discounts
+      .where("#{quantity} >= bulk_discounts.quantity_treshold")
+      .order("bulk_discounts.percentage_discount DESC")
+      .limit(1)
+      .pluck(:percentage_discount)
+      .first&.to_i || 0
+  end
 end
