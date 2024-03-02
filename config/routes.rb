@@ -25,6 +25,6 @@ Rails.application.routes.draw do
   resources :invoices, controller: "merchant_invoices"
 
   resources :merchant do
-    resources :bulk_discounts, only: [:show, :index, :new, :create]
+    resources :bulk_discounts, only: [:show, :index, :new, :create, :destroy]
   end
 end
