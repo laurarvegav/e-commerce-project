@@ -1,24 +1,28 @@
 <section class="invoice">
-  <h1><%=@invoice.id%></h1>
-  <p><%=@invoice.status%></p>
-  <p><%=@invoice.created_at.strftime('%A, %B, %d, %Y')%></p>
-  <p><%=@invoice.customer.first_name%> <%=@invoice.customer.last_name%></p>
+  <h1>Invoice #<%=@invoice.id%></h1>
+  <p>Invoice Status: <%=@invoice.status%></p>
+  <p>Created at: <%=@invoice.created_at.strftime('%A, %B, %d, %Y')%></p>
+  <p>Customer: <%=@invoice.customer.first_name%> <%=@invoice.customer.last_name%></p>
 </section>
 
 <section class="invoice-items">
   <% @invoice.items.each do |item| %>
-  <div id="item-<%= item.id %>">
-    <h3><%= item.name %></h3>
-    <p><%= @invoice.total_revenue %></p>
-    <p><%= item.current_invoice_item(item, @invoice).quantity %></p>
-    <p><%= item.current_invoice_item(item, @invoice).unit_price %></p>
-    <p>Invoice Status: <%= item.current_invoice_item(item, @invoice).status %></p>
+    <div id="item-<%= item.id %>">
+      <h3>Item: <%= item.name %></h3>
+      <p>Total Revenue: $<%= @invoice.total_revenue %></p>
+      <p>Quantity: <%= item.current_invoice_item(item, @invoice).quantity %></p>
+      <p>Unit Price: $<%= item.current_invoice_item(item, @invoice).unit_price %></p>
+      <p>Invoice Item Status: <%= item.current_invoice_item(item, @invoice).status %></p>
 
-    <%= form_with url:  merchant_item_path(item.merchant, item, invoice_id: @invoice.id), method: :patch, data: {turbo: false} do |f| %>
-        Status: <%= f.select "status", options_for_select([["Disabled", 0], ["Enabled", 1]]), value: item.status%>
-        <%= f.button "Update Item Status"  %>
-    <% end %>
+      <% if @merchant.eligible_discount(item.current_invoice_item(item, @invoice).quantity) != 0%>
+        <%= link_to "Details on Bulk Discount", merchant_bulk_discount_path(@merchant, @merchant.eligible_discount(item.current_invoice_item(item, @invoice).quantity)) %>
+      <% end %>
 
+      <%= form_with url:  merchant_item_path(item.merchant, item, invoice_id: @invoice.id), method: :patch, data: {turbo: false} do |f| %>
+          Status: <%= f.select "status", options_for_select([["Disabled", 0], ["Enabled", 1]]), value: item.status%>
+          <%= f.button "Update Item Status" %>
+      <% end %>
+    </div>
   <% end %>
 </section>
 
