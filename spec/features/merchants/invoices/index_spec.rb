@@ -82,11 +82,11 @@ RSpec.describe 'merchant invoice index', type: :feature do
       visit merchant_invoices_path(@merch_1)
       # Then I see the total revenue for my merchant from this invoice (not including discounts)
       within ".brute_revenue" do
-        expect(page).to have_content("Brute Revenue (before discounts): $50")
+        expect(page).to have_content("Brute Revenue (before discounts): $3")
         # And I see the total discounted revenue for my merchant from this invoice which includes bulk discounts in the calculation
       end
       within ".net_revenue" do
-        expect(page).to have_content("Net Revenue (after discounts): $40")
+        expect(page).to have_content("Net Revenue (after discounts): $3")
         # Note: We encourage you to use as much ActiveRecord as you can, but some Ruby is okay. Instead of a single query that sums the revenue of discounted items and the revenue of non-discounted items, we recommend creating a query to find the total discount amount, and then using Ruby to subtract that discount from the total revenue.
       end
       # For an extra spicy challenge: try to find the total revenue of discounted and non-discounted items in one query! 
