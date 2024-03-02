@@ -28,7 +28,6 @@ RSpec.describe 'Edit Merchant Bulk Discount', type: :feature do
       visit edit_merchant_bulk_discount_path(@merchant_1.id, @discount_m1_A)
       fill_in(:quantity_treshold, with: "five")
       click_button("Submit")
-      save_and_open_page
       expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant_1.id, @discount_m1_A))
       expect(page).to have_content("Error: Quantity treshold is not a number")
     end
