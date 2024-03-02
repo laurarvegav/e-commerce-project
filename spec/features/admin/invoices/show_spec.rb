@@ -16,10 +16,15 @@ RSpec.describe 'Admin Index Show', type: :feature do
       @merchant_1 = create(:merchant, name: "Amazon", status: 0) 
       @merchant_4 = create(:merchant, name: "Microsoft", status: 0) 
 
+      @discount_m4_A = BulkDiscount.create!(percentage_discount: 20, quantity_treshold: 10, merchant_id: @merchant_4.id)
+      @discount_m4_B = BulkDiscount.create!(percentage_discount: 30, quantity_treshold: 15, merchant_id: @merchant_4.id)
+
       @item_1 = create(:item, unit_price: 1, merchant_id: @merchant_1.id)
+      @item_2 = create(:item, unit_price: 1, merchant_id: @merchant_4.id)
       @item_8 = create(:item, unit_price: 1, merchant_id: @merchant_4.id)
 
       @invoice_item_1 = create(:invoice_item, item_id: @item_1.id, invoice_id: @invoice_1.id, quantity: 1, unit_price: 1300, status: 0)
+      @invoice_item_2 = create(:invoice_item, item_id: @item_2.id, invoice_id: @invoice_1.id, quantity: 10, unit_price: 1300, status: 0)
       @invoice_item_9 = create(:invoice_item, item_id: @item_8.id, invoice_id: @invoice_1.id, quantity: 4, unit_price: 5500, status: 2)
     end
 
@@ -73,7 +78,7 @@ RSpec.describe 'Admin Index Show', type: :feature do
       visit admin_invoice_path(@invoice_1)
       # Then I see the total revenue that will be generated from this invoice.
       within "#invoice_revenue" do
-        expect(page).to have_content("Total Revenue: $233.00")
+        expect(page).to have_content("Total Revenue: $363.00")
       end
     end
 
@@ -97,6 +102,19 @@ RSpec.describe 'Admin Index Show', type: :feature do
         expect(current_path).to eq(admin_invoice_path(@invoice_1))
         # And I see that my Invoice's status has now been updated
         expect(page).to have_content("Cancelled")
+      end
+    end
+
+    #User story I-8: Admin Invoice Show Page: Total Revenue and Discounted Revenue
+    it "" do
+      # As an admin When I visit an admin invoice show page
+      visit admin_invoice_path(@invoice_1)
+      save_and_open_page
+      within "#invoice_revenue" do
+        # Then I see the total revenue from this invoice (not including discounts)
+        expect(page).to have_content("Total Revenue: $363.00")
+        # And I see the total discounted revenue from this invoice which includes bulk discounts in the calculation
+        expect(page).to have_content("$145.20")
       end
     end
   end
