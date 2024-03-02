@@ -31,27 +31,33 @@ class Invoice < ApplicationRecord
   def total_revenue
     invoice_items.sum("unit_price * quantity")
   end
-
-  def self.net_revenue
-    brute_revenue - discounts
-  end
-
+  
   def self.brute_revenue
     total_revenue_in_cents = Invoice
-      .joins(:invoice_items)
-      .group("invoices.id")
-      .pluck(Arel.sql("sum(invoice_items.unit_price * invoice_items.quantity) as revenue"))
-      .sum
-
+    .joins(:invoice_items)
+    .group("invoices.id")
+    .pluck(Arel.sql("sum(invoice_items.unit_price * invoice_items.quantity) as revenue"))
+    .sum
+    
     total_revenue_in_cents/100
   end
+  
+  def self.net_revenue 
+    dct = []  
+    self.all.each do |inv|
+      dct << inv.eligible_discount  
+    end 
+    (brute_revenue * (1 - dct.max)).round(0)
+  end
 
-  def self.discounts
-    Invoice.joins(merchants: :bulk_discounts).joins(items: :invoice_items)
-      .select("merchants.id, bulk_discounts.*, items.*, invoice_items.*")
-      .where("merchants.id = items.merchant_id AND invoice_items.quantity >= bulk_discounts.quantity_treshold")
-      .group("invoices.id, bulk_discounts.id, items.id, invoice_items.id").pluck(Arel.sql("invoice_items.quantity * invoice_items.unit_price * (bulk_discounts.percentage_discount/100)")).sum
-    # require 'pry'; binding.pry
-    # Merchant.joins(items: :invoice_items).joins(:bulk_discounts)
+  def eligible_discount
+    quantity = self.invoice_items.sum(:quantity)
+    total_discount = 0
+
+    merchants.each do |merchant|
+      total_discount += merchant.eligible_discount(quantity) || 0
+    end
+    total_discount = [total_discount, 100].min
+    total_discount / 100.0
   end
 end
