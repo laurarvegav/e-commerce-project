@@ -43,5 +43,23 @@ RSpec.describe 'Bulk discounts index page', type: :feature do
       expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant_1.id))
       #Continued in spec/features/bulk_discounts/new_spec.rb
     end
+
+    #User Story I-3: Merchant Bulk Discount Delete
+    it "displays a successful delete button next to each bulk discount" do
+      # As a merchant When I visit my bulk discounts index
+      visit merchant_bulk_discounts_path(@merchant_1.id)
+      # Then next to each bulk discount I see a button to delete it
+      within "#bulk_discount-#{@discount_m1_A.id}" do
+        expect(page).to have_button("Delete")
+      end
+      within "#bulk_discount-#{@discount_m1_B.id}" do
+        # When I click this button
+        click_button("Delete")
+      end
+      # Then I am redirected back to the bulk discounts index page
+      expect(current_path).to eq(merchant_bulk_discounts_path(@merchant_1.id))
+      # And I no longer see the discount listed
+      expect(page).not_to have_content("Bulk Discount is 30% off 15 items")
+    end
   end
 end
