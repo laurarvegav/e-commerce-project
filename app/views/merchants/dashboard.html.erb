@@ -11,10 +11,11 @@
 </section>
 
  <section class="shipable-items">
+ <h3>Shippable Items</h3>
   <% @merchant.not_shipped_invoices.each do |invoice| %>
     <div id="invoice-<%= invoice.id %>">
       <h3><%= invoice.item_name %></h3>
-      <p><%= link_to "Invoice ID, #{invoice.id}", invoice_path(invoice.id), method: :get %></p>
+      <p><%= link_to "Invoice ID, #{invoice.id}", invoice_path(invoice), method: :get %></p>
       <p>Created at: <%= invoice.created_at.strftime('%A, %B, %d, %Y') %></p>
     </div>
   <% end %>

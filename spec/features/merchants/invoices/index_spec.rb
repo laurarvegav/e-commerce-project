@@ -80,6 +80,7 @@ RSpec.describe 'merchant invoice index', type: :feature do
     it "displays the total revenue for the merchant from this invoice including bulk discounts in the calculation" do
       # As a merchant When I visit my merchant invoice show page
       visit merchant_invoices_path(@merch_1)
+      save_and_open_page
       # Then I see the total revenue for my merchant from this invoice (not including discounts)
       within ".brute_revenue" do
         expect(page).to have_content("Brute Revenue (before discounts): $3")

@@ -109,7 +109,6 @@ RSpec.describe 'Admin Index Show', type: :feature do
     it "displays the net revenue after discounts" do
       # As an admin When I visit an admin invoice show page
       visit admin_invoice_path(@invoice_1)
-      save_and_open_page
       within "#invoice_revenue" do
         # Then I see the total revenue from this invoice (not including discounts)
         expect(page).to have_content("Total Revenue: $363.00")

@@ -15,7 +15,7 @@ RSpec.describe 'Bulk discounts index page', type: :feature do
       @discount_m1_B = BulkDiscount.create!(percentage_discount: 30, quantity_treshold: 15, merchant_id: @merchant_1.id)
     end
 
-    #User story 1: Merchant Bulk Discounts Index
+    #User story I-1: Merchant Bulk Discounts Index
     it 'displays all bulk  discounts and its attributes, with a link to its own show page' do
       visit dashboard_merchant_path(@merchant_1)
       click_link("View All #{@merchant_1.name} Discounts")

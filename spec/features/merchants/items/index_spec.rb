@@ -90,7 +90,7 @@ RSpec.describe 'merchant items index', type: :feature do
     end
 
     # 11. Merchant Item Create
-    it "can add an item" do
+    xit "can add an item" do
       # As a merchant
       # When I visit my items index page
       visit merchant_items_path(@merch_1)

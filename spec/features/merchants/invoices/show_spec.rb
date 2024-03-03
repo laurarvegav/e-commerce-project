@@ -128,7 +128,6 @@ RSpec.describe 'merchant invoice show', type: :feature do
     it "displays a link to the applied bulk discount to eligible invoice item" do
       # As a merchant When I visit my merchant invoice show page
       visit merchant_invoice_path(@merch_1, @invoice_6)
-      save_and_open_page
       # Next to each invoice item I see a link to the show page for the bulk discount that was applied (if any)
       within ".invoice-items" do
         within "#item-#{@item_3.id}" do
