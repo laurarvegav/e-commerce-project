@@ -15,7 +15,7 @@
       <p>Invoice Item Status: <%= item.current_invoice_item(item, @invoice).status %></p>
 
       <% if @merchant.eligible_discount(item.current_invoice_item(item, @invoice).quantity) != 0%>
-        <%= link_to "Details on Bulk Discount", merchant_bulk_discount_path(@merchant, @merchant.eligible_discount(item.current_invoice_item(item, @invoice).quantity)) %>
+        <%= link_to "Details on Bulk Discount", merchant_bulk_discount_path(merchant_id: @merchant.id, id: @merchant.b_discount(item.current_invoice_item(item, @invoice).quantity).id) %>
       <% end %>
 
       <%= form_with url:  merchant_item_path(item.merchant, item, invoice_id: @invoice.id), method: :patch, data: {turbo: false} do |f| %>
