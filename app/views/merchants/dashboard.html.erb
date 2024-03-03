@@ -1,7 +1,11 @@
 <%= render "shared/merchant_header", merchant: @merchant %>
 
+<div id="bulk_discounts">
+  <%= link_to "View All #{@merchant.name} Discounts", merchant_bulk_discounts_path(@merchant.id) %>
+</div>
+
 <section class="top-five">
-  <h3> Top Five Customers </h3>
+  <h2> Top Five Customers </h2>
 
   <% @merchant.top_five_cust.each do |customer| %>
     <div id="customer-<%= customer.id %>">
@@ -11,7 +15,7 @@
 </section>
 
  <section class="shipable-items">
- <h3>Shippable Items</h3>
+ <h2>Shippable Items</h2>
   <% @merchant.not_shipped_invoices.each do |invoice| %>
     <div id="invoice-<%= invoice.id %>">
       <h3><%= invoice.item_name %></h3>
@@ -21,8 +25,5 @@
   <% end %>
 </section>
 
-<div id="bulk_discounts">
-  <%= link_to "View All #{@merchant.name} Discounts", merchant_bulk_discounts_path(@merchant.id) %>
-</div>
 
 
