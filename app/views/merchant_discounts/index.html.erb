@@ -4,6 +4,7 @@
       <%= link_to "#{discount.id}", merchant_discount_path(@merchant, discount) %>
       <%= discount.percent_discount %>
       <%= discount.quantity_threshold %>
+      <%= button_to "Delete", merchant_discount_path(@merchant, discount), method: :delete %>
     </div>
   <% end %>
 </section>
