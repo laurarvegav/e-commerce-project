@@ -33,31 +33,23 @@ class Invoice < ApplicationRecord
   end
   
   def self.brute_revenue
-    total_revenue_in_cents = Invoice
-    .joins(:invoice_items)
-    .group("invoices.id")
-    .pluck(Arel.sql("sum(invoice_items.unit_price * invoice_items.quantity) as revenue"))
-    .sum
+    total_revenue_in_cents = joins(:invoice_items)
+      .group("invoices.id")
+      .pluck(Arel.sql("sum(invoice_items.unit_price * invoice_items.quantity) as revenue"))
+      .sum
     
     total_revenue_in_cents/100
   end
   
   def self.net_revenue 
-    dct = []  
-    self.all.each do |inv|
-      dct << inv.eligible_discount  
-    end 
-    (brute_revenue * (1 - dct.max)).round(0)
+    eligible_discounts = all.map(&:eligible_discount)
+    max_discount = eligible_discounts.max || 0
+    (brute_revenue * (1 - max_discount)).round(0)
   end
 
   def eligible_discount
-    quantity = self.invoice_items.sum(:quantity)
-    total_discount = 0
-
-    merchants.each do |merchant|
-      total_discount += merchant.eligible_discount(quantity) || 0
-    end
-    total_discount = [total_discount, 100].min
-    total_discount / 100.0
+    quantity = invoice_items.sum(:quantity)
+    total_discount = merchants.sum { |merchant| merchant.eligible_discount(quantity) || 0}
+    total_discount = [total_discount, 100].min / 100.0
   end
 end
