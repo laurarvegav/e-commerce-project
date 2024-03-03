@@ -14,6 +14,9 @@
 <section class="upcoming_holidays">
   <h3>Upcoming US holidays:</h3>
   <% @holidays.each do |holiday| %>
-    <li><%= holiday.name %><br> <%= holiday.date %></li>
+    <div id="<%= holiday.name %>">
+      <li><%= holiday.name %><br> <%= holiday.date %></li>
+      <%= button_to "Create Discount", new_merchant_bulk_discount_path(@merchant.id, query: { holiday_name: holiday.name }), method: :get, local: true %>
+    </div>
   <% end %>
 </section>
