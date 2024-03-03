@@ -146,6 +146,13 @@ RSpec.describe Merchant, type: :model do
           expect(@merchant_1.eligible_discount(5)).to eq(0)
         end
       end
+
+      describe "#b_discount" do
+        it "returns the full object of the biggest discount that the quantity qualifies for" do
+          expect(@merchant_1.b_discount(15)).to eq(@discount_m1_B)
+          expect(@merchant_1.b_discount(10)).to eq(@discount_m1_A)
+        end
+      end
     end
   end
 end
