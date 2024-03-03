@@ -61,5 +61,20 @@ RSpec.describe 'Bulk discounts index page', type: :feature do
       # And I no longer see the discount listed
       expect(page).not_to have_content("Bulk Discount is 30% off 15 items")
     end
+
+    #API Extension - Holidays API
+    it "displays the 3 upcoming holidays" do
+      # As a merchant When I visit the discounts index page
+      visit merchant_bulk_discounts_path(@merchant_1)
+      # I see a section with a header of "Upcoming Holidays"
+      within ".upcoming_holidays" do
+        # In this section the name and date of the next 3 upcoming US holidays are listed.
+        expect(page).to have_content("Upcoming US holidays:")
+        expect(page).to have_content("Good Friday")
+        expect(page).to have_content("Memorial Day")
+        expect(page).to have_content("Juneteent")
+        # Use the Next Public Holidays Endpoint in the [Nager.Date API](https://date.nager.at/swagger/index.html)
+      end
+    end
   end
 end
