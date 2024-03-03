@@ -54,11 +54,13 @@ class Merchant < ApplicationRecord
   end
 
   def eligible_discount(quantity)
-    self.bulk_discounts
+    (b_discount(quantity)&.percentage_discount || 0).to_i
+  end
+
+  def b_discount(quantity)
+    bulk_discounts
       .where("#{quantity} >= bulk_discounts.quantity_treshold")
       .order("bulk_discounts.percentage_discount DESC")
-      .limit(1)
-      .pluck(:percentage_discount)
-      .first&.to_i || 0
+      .first
   end
 end
