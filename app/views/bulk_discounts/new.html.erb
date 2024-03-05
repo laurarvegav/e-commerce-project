@@ -1,16 +1,15 @@
 <h3>Create a New Discount </h3>
 
-<% if @bulk_discoun != nil %>
-    Discount Name: Holiday discount<br>
-  <% end %>
-
-<%= form_with url: merchant_bulk_discounts_path(@merchant.id), method: :post, data: {turbo: false}, local: true do |f| %>
-
-  <%= f.label :percentage_discount %>
-  <%= f.text_field :percentage_discount, value: @bulk_discount&.percentage_discount %><br>
-
-  <%= f.label :quantity_treshold %>
-  <%= f.text_field :quantity_treshold, value: @bulk_discount&.quantity_treshold %>
-
-  <%= f.submit "Submit"%>
+<% if @bulk_discount != nil %>
+  Discount Name: Holiday discount<br>
 <% end %>
+  
+<%= render partial: 'new_holiday_dct', 
+  locals: {
+    path: merchant_bulk_discounts_path(@merchant.id),
+    method: :post,
+    value_percentage: @bulk_discount&.percentage_discount,
+    value_quantity: @bulk_discount&.quantity_treshold,
+    button_text: 'Submit'
+  } 
+%>
