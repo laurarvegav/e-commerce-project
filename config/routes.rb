@@ -27,4 +27,9 @@ Rails.application.routes.draw do
   resources :merchant do
     resources :bulk_discounts
   end
+
+  # resources :merchants do
+  #   resources :bulk_discounts, except: [:new] # Remove the default new route
+  #   post 'bulk_discounts/create_discount', to: 'bulk_discounts#create_discount', as: 'merchant_create_discount'
+  # end
 end

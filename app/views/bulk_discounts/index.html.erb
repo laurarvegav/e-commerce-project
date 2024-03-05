@@ -16,7 +16,10 @@
   <% @holidays.each do |holiday| %>
     <div id="<%= holiday.name %>">
       <li><%= holiday.name %><br> <%= holiday.date %></li>
-      <%= button_to "Create Discount", new_merchant_bulk_discount_path(@merchant.id, query: { holiday_name: holiday.name }), method: :get, local: true %>
+      <%= form_with(model: @merchant.bulk_discounts.build, url: merchant_bulk_discounts_path(@merchant.id), local: true, method: :post) do |f| %>
+        <%= f.hidden_field :holiday_name, value: holiday.name %>
+        <%= f.button "Create Discount" %>
+      <% end %>
     </div>
   <% end %>
 </section>
