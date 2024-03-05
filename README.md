@@ -42,35 +42,28 @@
 This project is an extension of the Little Esty Shop group project. You will add functionality for merchants to create bulk discounts for their items. A “bulk discount” is a discount based on the quantity of items the customer is buying, for example “20% off orders of 10 or more items”.
 
 ## Learning Goals
-- PWrite migrations to create tables and relationships between tables
+- Write migrations to create tables and relationships between tables
 - Implement CRUD functionality for a resource using forms, buttons, and links, and associated view helpers (form_with, button_to, etc)
 - Use MVC to organize code effectively, limiting the amount of logic included in views and controllers
 - Use built-in ActiveRecord methods to join multiple tables of data, make calculations, and group data based on one or more attributes
 - Write model tests that fully cover the data logic of the application
 - Write feature tests that fully cover the functionality of the application
 
-## Requirements
-- Must use Rails 7.1.x, Ruby 3.2.2
-- Must use PostgreSQL
-- All code must be tested via feature tests and model tests, respectively
-- Must use GitHub branching, team code reviews via GitHub PR comments, and either GitHub Projects or a project management tool of your group's choice (Trello, Notion, etc.)
-- Must include a thorough README to describe the project
-   - README should include a basic description of the project, a summary of the work completed, and some ideas for a potential contributor to work on/refactor next. Also include the names and GitHub links of all student contributors on your project. 
-- Must deploy completed code to the internet (using Heroku or Render)
-- Continuous Integration / Continuous Deployment is not allowed
-- Use of scaffolding is not allowed
-- Any gems added to the project must be approved by an instructor
-  - Pre-approved gems are `capybara, pry, faker, factory_bot_rails, orderly, simplecov, shoulda-matchers, launchy`
+## Technology Used
+- Rails 5.2.x
+- Ruby 2.7.4
+- PostgreSQL
+- Setup
 
-## Setup
+## To set up the app use the following steps:
+- Clone the repository.
+- Navigate your terminal to the root directory and run bundle install
+- Run rails db:{create,migrate}
+- To seed the database with data from the provided csv files, run the rake task rails csv_load:all
+- Run rails server to view the app in your brower at localhost:3000
 
-* Fork this repository
-* Clone your fork
-* From the command line, install gems and set up your DB:
-    * `bundle`
-    * `rails db:create`
-* Run the test suite with `bundle exec rspec`.
-* Run your development server with `rails s` to see the app in action.
+## Database Setup
+ ![Database Schema](doc/DatabaseSetup.png)
 
 ## Links
 
