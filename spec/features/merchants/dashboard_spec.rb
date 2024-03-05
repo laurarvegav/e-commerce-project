@@ -62,7 +62,7 @@ RSpec.describe 'merchants dashboard', type: :feature do
     end
 
     # 3. Merchant Dashboard Statistics - Favorite Customers
-    xit "displays top customers and their successful transation count" do 
+    it "displays top customers and their successful transation count" do 
       # When I visit my merchant dashboard (/merchants/:merchant_id/dashboard)
       visit dashboard_merchant_path(@merch_1.id)
       # Then I see the names of the top 5 customers
