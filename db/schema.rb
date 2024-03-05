@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_01_213203) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_29_230940) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,6 +29,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_213203) do
     t.string "last_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "discounts", force: :cascade do |t|
+    t.integer "percent_discount"
+    t.integer "quantity_threshold"
+    t.bigint "merchant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merchant_id"], name: "index_discounts_on_merchant_id"
   end
 
   create_table "invoice_items", force: :cascade do |t|
@@ -78,7 +88,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_01_213203) do
     t.index ["invoice_id"], name: "index_transactions_on_invoice_id"
   end
 
+
   add_foreign_key "bulk_discounts", "merchants"
+  add_foreign_key "discounts", "merchants"
   add_foreign_key "invoice_items", "invoices"
   add_foreign_key "invoice_items", "items"
   add_foreign_key "invoices", "customers"
