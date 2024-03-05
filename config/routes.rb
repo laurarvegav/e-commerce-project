@@ -25,12 +25,7 @@ Rails.application.routes.draw do
   get "/", to: "welcome#index"
   resources :invoices, controller: "merchant_invoices"
 
-  resources :merchant do
+  resources :merchants do
     resources :bulk_discounts
   end
-
-  # resources :merchants do
-  #   resources :bulk_discounts, except: [:new] # Remove the default new route
-  #   post 'bulk_discounts/create_discount', to: 'bulk_discounts#create_discount', as: 'merchant_create_discount'
-  # end
 end
