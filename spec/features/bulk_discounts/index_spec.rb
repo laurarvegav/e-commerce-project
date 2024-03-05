@@ -78,7 +78,7 @@ RSpec.describe 'Bulk discounts index page', type: :feature do
     end
 
     #Holiday Dct Extension- Create a Holiday Discount
-    xit "allows to create a new discount named after a holiday" do
+    it "allows to create a new discount named after a holiday" do
       # As a merchant, when I visit the discounts index page,
       visit merchant_bulk_discounts_path(@merchant_1)
 
