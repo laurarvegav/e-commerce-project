@@ -17,13 +17,17 @@ class BulkDiscountsController < ApplicationController
   end
 
   def create
-    merchant = Merchant.find(params[:merchant_id])
-    bulk_discount = BulkDiscount.new(discount_merchant_params)
-    if bulk_discount.save
-      redirect_to merchant_bulk_discounts_path(merchant)
+    @merchant = Merchant.find(params[:merchant_id])
+    if params["bulk_discount"].present?
+      create_holiday_discount(@merchant)
     else 
-      redirect_to new_merchant_bulk_discount_path(merchant.id)
-      flash[:alert] =  "Error: #{error_message(bulk_discount.errors)}"
+      bulk_discount = BulkDiscount.new(discount_merchant_params)
+      if bulk_discount.save
+        redirect_to merchant_bulk_discounts_path(@merchant)
+      else 
+        redirect_to new_merchant_bulk_discount_path(@merchant.id)
+        flash[:alert] =  "Error: #{error_message(bulk_discount.errors)}"
+      end
     end
   end
 
@@ -42,7 +46,10 @@ class BulkDiscountsController < ApplicationController
   def update
     merchant = Merchant.find(params[:merchant_id])
     bulk_discount = BulkDiscount.find(params[:id])
+    update_discount(bulk_discount,merchant)
+  end
 
+  def update_discount(bulk_discount,merchant)
     if bulk_discount.update(discount_merchant_params)
       bulk_discount.update(discount_merchant_params)
       redirect_to merchant_bulk_discount_path(merchant, bulk_discount)
@@ -53,8 +60,23 @@ class BulkDiscountsController < ApplicationController
     end
   end
 
+  
   private
+  def create_holiday_discount(merchant)
+    merchant = Merchant.find(params[:merchant_id])
+    @dct_name = holiday_discount_params
+    @bulk_discount = merchant.bulk_discounts.new(quantity_treshold: 2, percentage_discount: 30)
+  
+    if @bulk_discount.save
+      render 'new'
+    end
+  end
+
   def discount_merchant_params
     params.permit(:percentage_discount, :quantity_treshold, :merchant_id)
+  end
+
+  def holiday_discount_params
+    params.require(:bulk_discount).permit(:holiday_name, :merchant_id)
   end
 end

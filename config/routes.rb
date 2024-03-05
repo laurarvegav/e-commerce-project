@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     member { get "dashboard" }
     resources :items, controller: 'merchant_items', only: [:index, :show, :edit, :update, :new, :create]
     resources :invoices, controller: 'merchant_invoices', only: [:index, :show]
+    resources :discounts, controller: 'merchant_discounts'
   end
   
   get "/", to: "welcome#index"
@@ -27,4 +28,9 @@ Rails.application.routes.draw do
   resources :merchant do
     resources :bulk_discounts
   end
+
+  # resources :merchants do
+  #   resources :bulk_discounts, except: [:new] # Remove the default new route
+  #   post 'bulk_discounts/create_discount', to: 'bulk_discounts#create_discount', as: 'merchant_create_discount'
+  # end
 end
