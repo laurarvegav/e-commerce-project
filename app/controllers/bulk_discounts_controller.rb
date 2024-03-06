@@ -68,7 +68,7 @@ class BulkDiscountsController < ApplicationController
     @bulk_discount = merchant.bulk_discounts.new(quantity_treshold: 2, percentage_discount: 30)
   
     if @bulk_discount.save
-      render 'new'
+      render :new
     end
   end
 
