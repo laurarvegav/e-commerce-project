@@ -76,7 +76,7 @@ RSpec.describe 'merchant invoice show', type: :feature do
           # - The price the Item sold for
           expect(page).to have_content(1)
           # - The Invoice Item status
-          expect(page).to have_content("packaged")
+          expect(find_field(:status).value).to eq("0")
         end
         # And I do not see any information related to Items for other merchants
         expect(current_path).to_not eq(@item_2.name)
@@ -105,14 +105,14 @@ RSpec.describe 'merchant invoice show', type: :feature do
         expect(page).to have_select("status")
         # And I see that the invoice item's current status is selected
         # When I click this select field,
-        select("Enabled", from: "status")
+        select("Packaged", from: "status")
     
         # Then I can select a new status for the Item,
         # select 'Enabled', from: 'status'
         # And next to the select field I see a button to "Update Item Status"
-        expect(page).to have_content("Update Item Status")
+        expect(page).to have_content("Update Invoice Item Status")
         # When I click this button
-        click_button("Update Item Status")
+        click_button("Update Invoice Item Status")
       end
       
       # I am taken back to the merchant invoice show page
@@ -120,7 +120,30 @@ RSpec.describe 'merchant invoice show', type: :feature do
 
       within "#item-#{@item_1.id}" do 
         # And I see that my Item's status has now been updated
-        expect(page).to have_content("Enabled")
+        expect(find_field(:status).value).to eq("0")
+      end
+    end
+
+    #User Story I-6: Merchant Invoice Show Page: Total Revenue and Discounted Revenue
+    it "displays the total revenue for the merchant from this invoice including bulk discounts in the calculation" do
+      # As a merchant When I visit my merchant invoice show page
+      visit merchant_invoice_path(@merch_1, @invoice_6)
+      # Then I see the total revenue for my merchant from this invoice (not including discounts)
+      within "#revenue" do
+        expect(page).to have_content("Brute Revenue (before discounts): $0.2")
+        # And I see the total discounted revenue for my merchant from this invoice which includes bulk discounts in the calculation
+        expect(page).to have_content("Net Revenue (after discounts): $0.155")
+      end
+      # Note: We encourage you to use as much ActiveRecord as you can, but some Ruby is okay. Instead of a single query that sums the revenue of discounted items and the revenue of non-discounted items, we recommend creating a query to find the total discount amount, and then using Ruby to subtract that discount from the total revenue.
+      within ".invoice-items" do
+        # For an extra spicy challenge: try to find the total revenue of discounted and non-discounted items in one query! 
+        within "#item-#{@item_3.id}" do
+          expect(page).to have_content("$0.105")
+        end
+
+        within "#item-#{@item_1.id}" do
+          expect(page).to have_content("$0.05")
+        end
       end
     end
 
