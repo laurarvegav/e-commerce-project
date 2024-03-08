@@ -1,3 +1,6 @@
+<%= render "shared/common_header"%>
+<%= render "shared/merchant_header", merchant: @merch %>
+
 <%= form_with url: merchant_item_path(@merch, @item), method: :patch, data: {turbo: false}, local: true do |f| %>
   <%= f.label :name %>
   <%= f.text_field :name %>
