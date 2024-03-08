@@ -1,3 +1,11 @@
-<% @merchants.each do |merchant| %>
- <%= link_to merchant.name, dashboard_merchant_path(merchant), method: :get %><br>
-<% end %>
+<nav>
+  <ul>
+    <li><%= link_to "Little Esty Shop", welcome_path, method: :get %></a></li>
+    <li><%= link_to "Admin Dashboard", admin_index_path, method: :get %></a></li>
+  </ul>
+</nav>
+
+<h2>List of Merchants</h2>
+  <% @merchants.each do |merchant| %>
+  <%= link_to merchant.name, dashboard_merchant_path(merchant), method: :get %><br>
+  <% end %>
