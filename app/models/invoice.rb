@@ -28,10 +28,6 @@ class Invoice < ApplicationRecord
     invoice_items.sum("quantity * unit_price")/100.00
   end
   
-  def total_revenue
-    invoice_items.sum("unit_price * quantity")
-  end
-  
   def self.brute_revenue
     total_revenue_in_cents = joins(:invoice_items)
       .group("invoices.id")
