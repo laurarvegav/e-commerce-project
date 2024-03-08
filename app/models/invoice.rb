@@ -48,4 +48,8 @@ class Invoice < ApplicationRecord
     total_discount = merchants.sum { |merchant| merchant.eligible_discount(quantity) || 0}
     total_discount = [total_discount, 100].min / 100.0
   end
+
+  def calculate_revenue(revenue)
+    invoice_items.sum(&revenue)
+  end
 end
