@@ -1,3 +1,5 @@
+<%= render "shared/common_header"%>
+
 <h2>Edit Bulk discount</h2>
 <%= form_with url: merchant_bulk_discount_path(@merchant, @discount), method: :patch, data: {turbo: false}, local: true do |f| %>
   <%= f.label :percentage_discount %>
