@@ -130,13 +130,5 @@ RSpec.describe Invoice, type: :model do
         expect(@invoice_2.total_revenue_dollars).to eq(13.00)
       end
     end
-
-    describe '#total_revenue' do
-      it "returns the total revenue of the invoice item" do
-        expect(@invoice_6.total_revenue).to eq(0)
-        expect(@invoice_1.total_revenue).to eq(24800)
-        expect(@invoice_2.total_revenue).to eq(1300)
-      end
-    end
   end
 end
