@@ -1,3 +1,6 @@
+<%= render "shared/common_header"%>
+<%= render "shared/merchant_header", merchant: @merchant %>
+
 <section class="all-discounts">
   <% @discounts.each do |discount| %>
     <div id="discount-<%= discount.id %>">
