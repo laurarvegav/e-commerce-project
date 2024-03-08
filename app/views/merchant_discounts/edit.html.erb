@@ -1,3 +1,6 @@
+<%= render "shared/common_header"%>
+<%= render "shared/merchant_header", merchant: @merchant %>
+
 <%= form_with url: merchant_discount_path(@merchant, @discount), method: :patch do |f| %>
   <%= f.label :percent_discount%>
   <%= f.number_field :percent_discount, value: @discount.percent_discount%>
